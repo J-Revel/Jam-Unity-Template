@@ -8,6 +8,7 @@ public class GenericScenarioAction : MonoBehaviour
     private ScenarioNode node;
     public UnityEvent enterNodeEvent;
     public UnityEvent leaveNodeEvent;
+    public bool canLeaveNode = true;
 
     void Start()
     {
@@ -16,5 +17,6 @@ public class GenericScenarioAction : MonoBehaviour
             node = gameObject.AddComponent<ScenarioNode>();
         node.enterNodeDelegate += () => { enterNodeEvent?.Invoke(); };
         node.leaveNodeDelegate += () => { leaveNodeEvent?.Invoke(); };
+        node.conditionDelegate += () => { return canLeaveNode; };
     }
 }
