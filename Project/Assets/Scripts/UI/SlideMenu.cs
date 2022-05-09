@@ -10,21 +10,31 @@ public class SlideMenu : MonoBehaviour
     private Vector3 startPosition;
     private float animTime = 0;
     private bool inTransition = false;
+    public RectTransform screenSizeElement;
+    public GameObject leftButton;
+    public GameObject rightButton;
 
 
     void Start()
     {
         transform.localPosition = -transform.GetChild(targetIndex).localPosition;
+        leftButton.SetActive(false);
+        rightButton.SetActive(transform.childCount > 0);
     }
 
     private void Update()
     {
+        for(int i=0; i<transform.childCount; i++)
+        {
+            transform.GetChild(i).GetComponent<RectTransform>().sizeDelta = screenSizeElement.rect.size;
+        }
         if(inTransition)
         {
             animTime += Time.deltaTime;
             Vector3 targetPosition = -transform.GetChild(targetIndex).localPosition;
             float animRatio = animTime / transitionDuration;
-            transform.localPosition = Vector3.Lerp(startPosition, targetPosition, 1 - (1 - animRatio) * (1 - animRatio));
+            float oneMinusRatio = 1 - animRatio;
+            transform.localPosition = Vector3.Lerp(startPosition, targetPosition, (1 - oneMinusRatio * oneMinusRatio * oneMinusRatio) * (1 - oneMinusRatio * oneMinusRatio * oneMinusRatio));
             if(animTime > transitionDuration)
                 inTransition = false;
         }
@@ -38,6 +48,9 @@ public class SlideMenu : MonoBehaviour
         animTime = 0;
         inTransition = true;
         startPosition = transform.localPosition;
+        
+        leftButton.SetActive(targetIndex > 0);
+        rightButton.SetActive(transform.childCount > targetIndex + 1);
     }
 
     public void SelectPrevious()
@@ -48,5 +61,8 @@ public class SlideMenu : MonoBehaviour
         animTime = 0;
         inTransition = true;
         startPosition = transform.localPosition;
+        
+        leftButton.SetActive(targetIndex > 0);
+        rightButton.SetActive(transform.childCount > targetIndex + 1);
     }
 }
