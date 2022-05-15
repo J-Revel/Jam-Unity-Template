@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SlideMenu : MonoBehaviour
 {
-    public int targetIndex;
+    public SlideMenuScreen targetScreen;
     public float animPosition;
     public float transitionDuration = 0.5f;
     private Vector3 startPosition;
@@ -14,24 +14,23 @@ public class SlideMenu : MonoBehaviour
     public GameObject leftButton;
     public GameObject rightButton;
 
+    public Dictionary<string, SlideMenuScreen> registeredScreens = new Dictionary<string, SlideMenuScreen>();
+    
 
     void Start()
     {
-        transform.localPosition = -transform.GetChild(targetIndex).localPosition;
-        leftButton.SetActive(false);
-        rightButton.SetActive(transform.childCount > 0);
+        targetScreen = transform.GetChild(0).GetComponent<SlideMenuScreen>();
+        transform.localPosition = - transform.InverseTransformPoint(targetScreen.transform.position);
+        UpdateButtonsDisplay();
     }
 
     private void Update()
     {
-        for(int i=0; i<transform.childCount; i++)
-        {
-            transform.GetChild(i).GetComponent<RectTransform>().sizeDelta = screenSizeElement.rect.size;
-        }
+        targetScreen.availableSize = screenSizeElement.rect.size;
         if(inTransition)
         {
             animTime += Time.deltaTime;
-            Vector3 targetPosition = -transform.GetChild(targetIndex).localPosition;
+            Vector3 targetPosition = - transform.InverseTransformPoint(targetScreen.transform.position);
             float animRatio = animTime / transitionDuration;
             float oneMinusRatio = 1 - animRatio;
             transform.localPosition = Vector3.Lerp(startPosition, targetPosition, (1 - oneMinusRatio * oneMinusRatio * oneMinusRatio) * (1 - oneMinusRatio * oneMinusRatio * oneMinusRatio));
@@ -40,29 +39,43 @@ public class SlideMenu : MonoBehaviour
         }
     }
 
+    public void UpdateButtonsDisplay()
+    {
+        bool showLeftButton = false;
+        bool showRightButton = false;
+        if(targetScreen != null)
+        {
+            showLeftButton |= targetScreen.previousTarget != "";
+            showRightButton |= targetScreen.nextTarget != "";
+        }
+        leftButton.SetActive(showLeftButton);
+        rightButton.SetActive(showRightButton);
+    }
+
     public void SelectNext()
     {
-        targetIndex++;
-        if(targetIndex >= transform.childCount)
-            targetIndex = transform.childCount - 1;
+        targetScreen = registeredScreens[targetScreen.nextTarget];
         animTime = 0;
         inTransition = true;
         startPosition = transform.localPosition;
-        
-        leftButton.SetActive(targetIndex > 0);
-        rightButton.SetActive(transform.childCount > targetIndex + 1);
+        UpdateButtonsDisplay();
     }
 
     public void SelectPrevious()
     {
-        targetIndex--;
-        if(targetIndex < 0)
-            targetIndex = 0;
+        targetScreen = registeredScreens[targetScreen.previousTarget];
         animTime = 0;
         inTransition = true;
         startPosition = transform.localPosition;
-        
-        leftButton.SetActive(targetIndex > 0);
-        rightButton.SetActive(transform.childCount > targetIndex + 1);
+        UpdateButtonsDisplay();
+    }
+
+    public void GoToScreen(string target)
+    {
+        targetScreen = registeredScreens[target];
+        animTime = 0;
+        inTransition = true;
+        startPosition = transform.localPosition;
+        UpdateButtonsDisplay();
     }
 }
