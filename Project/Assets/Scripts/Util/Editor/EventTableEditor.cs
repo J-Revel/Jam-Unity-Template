@@ -7,6 +7,7 @@ using UnityEngine;
 public class EventTableEditor : Editor
 {
     SerializedProperty lookAtPoint;
+    private bool hideUnused = false;
     
     void OnEnable()
     {
@@ -16,14 +17,34 @@ public class EventTableEditor : Editor
     public override void OnInspectorGUI()
     {
         serializedObject.Update();
+        SerializedProperty eventsProperty = serializedObject.FindProperty("events");
         EventTable eventTable = target as EventTable;
+        var audioPrefabProperty = serializedObject.FindProperty("audioPrefab");
+        hideUnused = GUILayout.Toggle(hideUnused, "Hide unused");
+        EditorGUILayout.PropertyField(audioPrefabProperty);
         foreach(EventInvocationData invocationData in EventTable.ListEvents(eventTable.gameObject))
         {
+            if(hideUnused)
+            {
+                bool show = false;
+                for(int i=0; i<eventsProperty.arraySize; i++)
+                {
+                    SerializedProperty invocationDataProperty = eventsProperty.GetArrayElementAtIndex(i).FindPropertyRelative("invocationData");
+                    if(invocationDataProperty.FindPropertyRelative("gameObject").objectReferenceValue == invocationData.gameObject
+                        && invocationDataProperty.FindPropertyRelative("fieldName").stringValue == invocationData.fieldName)
+                    {
+                        show = true;
+                        break;
+                    }
+                }
+                if(!show)
+                    continue;
+            }
             EditorGUILayout.BeginVertical(EditorStyles.helpBox);
-            EditorGUILayout.BeginHorizontal(EditorStyles.helpBox);
-            var style = new GUIStyle(GUI.skin.label) {alignment = TextAnchor.MiddleCenter};
+            EditorGUILayout.BeginHorizontal(EditorStyles.boldLabel);
+            var style = EditorStyles.boldLabel;
+            style.alignment = TextAnchor.MiddleCenter;
             EditorGUILayout.LabelField(invocationData.displayPath, style, GUILayout.ExpandWidth(true));
-            SerializedProperty eventsProperty = serializedObject.FindProperty("events");
             if(GUILayout.Button("+", GUILayout.Width(30)))
             {
                 int insertIndex = Mathf.Max(eventsProperty.arraySize - 1, 0);
@@ -38,19 +59,30 @@ public class EventTableEditor : Editor
             }
 
             EditorGUILayout.EndHorizontal();
+            EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+            EditorGUI.indentLevel++;
             for(int i=0; i<eventsProperty.arraySize; i++)
             {
-                if(eventsProperty.GetArrayElementAtIndex(i).FindPropertyRelative("invocationData").FindPropertyRelative("displayPath").stringValue == invocationData.displayPath)
+                SerializedProperty invocationDataProperty = eventsProperty.GetArrayElementAtIndex(i).FindPropertyRelative("invocationData");
+                if(invocationDataProperty.FindPropertyRelative("gameObject").objectReferenceValue == invocationData.gameObject
+                    && invocationDataProperty.FindPropertyRelative("fieldName").stringValue == invocationData.fieldName)
                 {
-                    var messageProperty = eventsProperty.GetArrayElementAtIndex(i).FindPropertyRelative("message");
-                    string newValue = EditorGUILayout.TextField(messageProperty.stringValue);
-                    if(newValue != messageProperty.stringValue)
+                    var soundConfigProperty = eventsProperty.GetArrayElementAtIndex(i).FindPropertyRelative("soundConfig");
+                    EditorGUILayout.PropertyField(soundConfigProperty);
+                    var buttonStyle = EditorStyles.boldLabel;
+                    buttonStyle.alignment = TextAnchor.MiddleRight;
+                    EditorGUILayout.BeginHorizontal(buttonStyle);
+                    if(GUILayout.Button("Delete"))
                     {
-                        messageProperty.stringValue = newValue;
-                        serializedObject.ApplyModifiedProperties();
+                        eventsProperty.DeleteArrayElementAtIndex(i);
                     }
+                    serializedObject.ApplyModifiedProperties();
+                    EditorGUILayout.EndHorizontal();
                 }
+
             }
+            EditorGUI.indentLevel--;
+            EditorGUILayout.EndVertical();
             EditorGUILayout.EndVertical();
         }
     }

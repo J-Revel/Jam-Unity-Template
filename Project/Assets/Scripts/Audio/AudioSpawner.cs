@@ -17,11 +17,11 @@ public class AudioSpawner : MonoBehaviour
 
     public void PlaySound()
     {
-        prefab.volume = Random.Range(minIntensity, maxIntensity);
-        prefab.pitch = Random.Range(minPitch, maxPitch);
-        prefab.clip = clip;
-        prefab.outputAudioMixerGroup = mixerGroup;
         AudioSource source = Instantiate(prefab, transform.position, transform.rotation);
+        source.volume = Random.Range(minIntensity, maxIntensity);
+        source.pitch = Random.Range(minPitch, maxPitch);
+        source.clip = clip;
+        source.outputAudioMixerGroup = mixerGroup;
         source.Play();
     }
 }
