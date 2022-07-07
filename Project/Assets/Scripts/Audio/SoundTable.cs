@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 
+
 [System.Serializable]
 public struct EventInvocationData
 {
@@ -20,10 +21,11 @@ public struct EventConfig
     
 }
 
+
 [System.Serializable]
 public struct SoundConfig
 {
-    public AudioClip clip;
+    public AudioClip[] clips;
     public AudioMixerGroup mixerGroup;
 
     public float minPitch;
@@ -32,7 +34,7 @@ public struct SoundConfig
     public float maxIntensity;
 }
 
-public class EventTable : MonoBehaviour
+public class SoundTable : MonoBehaviour
 {
     public AudioSource audioPrefab;
     public EventConfig[] events;
@@ -45,25 +47,25 @@ public class EventTable : MonoBehaviour
             Component component = invocationData.gameObject.GetComponent(invocationData.scriptType);
             
             System.Reflection.FieldInfo field = component.GetType().GetField(invocationData.fieldName, System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-            object target = field.GetValue(component);
-            if(field.FieldType.IsSubclassOf(typeof(UnityEngine.Events.UnityEvent)))
+            if(field != null)
             {
-                (target as UnityEngine.Events.UnityEvent).AddListener(() => {
-                    StartCoroutine(PlaySound(component.gameObject, eventConfig.soundConfig));
-                });
-            }
-            if(field.FieldType.IsSubclassOf(typeof(System.MulticastDelegate)))
-            {
-                var targetDelegate = (target as System.Action);
-                targetDelegate += () => {
-                    StartCoroutine(PlaySound(component.gameObject, eventConfig.soundConfig));
-                };
+                object target = field.GetValue(component);
+                if(field.FieldType.IsSubclassOf(typeof(UnityEngine.Events.UnityEvent)))
+                {
+                    (target as UnityEngine.Events.UnityEvent).AddListener(() => {
+                        StartCoroutine(PlaySound(component.gameObject, eventConfig.soundConfig));
+                    });
+                }
+                if(field.FieldType.IsSubclassOf(typeof(System.MulticastDelegate)))
+                {
+                    var targetDelegate = (target as System.Action);
+                    targetDelegate += () => {
+                        StartCoroutine(PlaySound(component.gameObject, eventConfig.soundConfig));
+                    };
+                    field.SetValue(component, targetDelegate);
+                }
             }
         }
-    }
-
-    private void Update()
-    {
     }
 
     public static EventInvocationData[] ListEvents(GameObject gameObject)
@@ -80,7 +82,9 @@ public class EventTable : MonoBehaviour
             }
             foreach(var member in type.GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance))
             {
-                if(member.FieldType.IsSubclassOf(typeof(UnityEngine.Events.UnityEvent)) || member.FieldType.IsSubclassOf(typeof(System.MulticastDelegate)))
+                if( member.FieldType.IsSubclassOf(typeof(UnityEngine.Events.UnityEvent))
+                    || member.FieldType.IsSubclassOf(typeof(System.MulticastDelegate))
+                )
                 {
                     EventInvocationData invocationData = new EventInvocationData();
                     invocationData.displayPath = gameObjectPath + type.Name + "." + member.Name;
@@ -100,10 +104,11 @@ public class EventTable : MonoBehaviour
         AudioSource source = Instantiate(audioPrefab, emitter.transform.position, emitter.transform.rotation);
         source.volume = Random.Range(soundConfig.minIntensity, soundConfig.maxIntensity);
         source.pitch = Random.Range(soundConfig.minPitch, soundConfig.maxPitch);
-        source.clip = soundConfig.clip;
+        AudioClip selectedClip = soundConfig.clips[Random.Range(0, soundConfig.clips.Length)];
+        source.clip = selectedClip;
         source.outputAudioMixerGroup = soundConfig.mixerGroup;
         source.Play();
-        yield return new WaitForSeconds(soundConfig.clip.length + 1);
+        yield return new WaitForSeconds(selectedClip.length + 1);
         Destroy(source.gameObject);
     }
 }

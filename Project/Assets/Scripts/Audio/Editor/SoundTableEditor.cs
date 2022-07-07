@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-[CustomEditor(typeof(EventTable))]
-public class EventTableEditor : Editor
+[CustomEditor(typeof(SoundTable))]
+public class SoundTableEditor : Editor
 {
     SerializedProperty lookAtPoint;
     private bool hideUnused = false;
@@ -18,11 +18,12 @@ public class EventTableEditor : Editor
     {
         serializedObject.Update();
         SerializedProperty eventsProperty = serializedObject.FindProperty("events");
-        EventTable eventTable = target as EventTable;
+        SoundTable eventTable = target as SoundTable;
         var audioPrefabProperty = serializedObject.FindProperty("audioPrefab");
         hideUnused = GUILayout.Toggle(hideUnused, "Hide unused");
-        EditorGUILayout.PropertyField(audioPrefabProperty);
-        foreach(EventInvocationData invocationData in EventTable.ListEvents(eventTable.gameObject))
+        EditorGUILayout.ObjectField(audioPrefabProperty);
+        serializedObject.ApplyModifiedProperties();
+        foreach(EventInvocationData invocationData in SoundTable.ListEvents(eventTable.gameObject))
         {
             if(hideUnused)
             {
