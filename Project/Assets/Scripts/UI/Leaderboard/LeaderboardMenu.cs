@@ -39,7 +39,7 @@ public class LeaderboardMenu : MonoBehaviour
     private LeaderboardLine[] lines;
     public int pageIndex;
     public GameObject loadingScreen;
-    public Transform mainContainer;
+    public RectTransform mainContainer;
     public int pageCount = 0;
     private int scoreId = -1;
 
@@ -47,6 +47,7 @@ public class LeaderboardMenu : MonoBehaviour
     public string tempUsername;
 
     public bool showTop = false;
+    public bool showLocalScore = true;
 
     IEnumerator Start()
     {
@@ -55,6 +56,9 @@ public class LeaderboardMenu : MonoBehaviour
         for(int i=0; i<pageSize; i++)
         {
             lines[i] = Instantiate(linePrefab, mainContainer);
+            RectTransform rectTransform = lines[i].GetComponent<RectTransform>();
+            rectTransform.anchorMin = new Vector2(0, 1 - (float)(i+1) / pageSize);
+            rectTransform.anchorMax = new Vector2(1, 1 - (float)i / pageSize);
             lines[i].index = i;
         }
         yield return UpdateDisplay();
@@ -67,7 +71,7 @@ public class LeaderboardMenu : MonoBehaviour
             lines[i].Clear();
         int scoreId = PlayerPrefs.GetInt("scoreId", -1);
         WWWForm form = new WWWForm();
-        UnityWebRequest webRequest = LeaderboardUtility.GetLeaderboardRequest(EncryptionService.projectId, showTop, pageSize, scoreId, tempScore, tempUsername);
+        UnityWebRequest webRequest = LeaderboardUtility.GetLeaderboardRequest(EncryptionService.instance.projectId, showTop, pageSize, scoreId, tempScore, tempUsername);
         yield return webRequest.SendWebRequest();
         loadingScreen.SetActive(false);
         switch (webRequest.result)
@@ -75,7 +79,7 @@ public class LeaderboardMenu : MonoBehaviour
             case UnityWebRequest.Result.Success:
                 JSONNode root = JSON.Parse(webRequest.downloadHandler.text);
                 LeaderboardEntry[] entries = LeaderboardUtility.ParseLeaderboardQueryResult(root);
-                for(int i=0; i<lines.Length; i++)
+                for(int i=0; i<Mathf.Min(lines.Length, entries.Length); i++)
                 {
                     lines[i].leaderboardEntry = entries[i];
                 }

@@ -34,11 +34,10 @@ public class ScoreSendForm : MonoBehaviour
         string username = inputField.text;
         form.AddField("username", username);
         form.AddField("id", scoreId);
-        EncryptionResult encryptedScore = EncryptionService.Encrypt(Encoding.UTF8.GetBytes(ScoreSystem.instance.score.ToString()));
+        EncryptionResult encryptedScore = EncryptionService.instance.Encrypt(Encoding.UTF8.GetBytes(ScoreSystem.instance.score.ToString()));
         form.AddField("score", System.Convert.ToBase64String(encryptedScore.data));
         form.AddField("iv", System.Convert.ToBase64String(encryptedScore.iv));
-        form.AddField("project", EncryptionService.projectId);
-        
+        form.AddField("project", EncryptionService.instance.projectId);
 
         string requestPath = "https://webservice.guilloteam.fr/score/add/";
         if(scoreId >= 0)

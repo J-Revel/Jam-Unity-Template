@@ -16,7 +16,7 @@ public class LeaderboardUtility
         form.AddField("tempScore", tempScore);
         form.AddField("tempUsername", tempUsername);
         form.AddField("project", projectId);
-        UnityWebRequest webRequest = UnityWebRequest.Post(webServiceRoot + "score/" + (showTop ? "page/" : "around/"),  form);
+        UnityWebRequest webRequest = UnityWebRequest.Post(webServiceRoot + "score/" + ((showTop || scoreId < 0) ? "page/" : "around/"),  form);
         return webRequest;
     }
 

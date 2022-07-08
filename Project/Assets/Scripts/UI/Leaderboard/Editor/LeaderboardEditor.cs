@@ -7,6 +7,7 @@ using UnityEditor;
 using UnityEngine.Networking;
 using System.Runtime.CompilerServices;
 using UnityEditor.IMGUI.Controls;
+using System.IO;
 
 
 public class LeaderboardEditor : EditorWindow
@@ -173,7 +174,12 @@ public class LeaderboardEditor : EditorWindow
         if(GUILayout.Button("Create Leaderboard"))
         {
             SendWebRequest(LeaderboardUtility.CreateLeaderboardRequest(leaderboardUid, password), (SimpleJSON.JSONNode node) => {
-                Debug.Log("Creation Success");
+                if(!AssetDatabase.IsValidFolder("Assets/Resources"))
+                    AssetDatabase.CreateFolder("Assets", "Resources");
+                 File.WriteAllText(Application.dataPath + "/Resources/config.json", node.ToString());
+                 AssetDatabase.Refresh();
+                 LoadConfig();
+                 Initialize();
             },
             (string error) => {
                 Debug.LogError(error);

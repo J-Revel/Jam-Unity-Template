@@ -14,20 +14,22 @@ public struct EncryptionResult
 
 public class EncryptionService : MonoBehaviour
 {
-    public static string encryptionKey;
-    public static string projectId;
+    public static EncryptionService instance;
+    public string encryptionKey;
+    public string projectId;
 
-    public void Start()
+    public void Awake()
     {
-        
-    }
-
-    public static EncryptionResult Encrypt(byte[] data)
-    {
+        instance = this;
         TextAsset configAsset = Resources.Load<TextAsset>("config");
         SimpleJSON.JSONNode configRoot = SimpleJSON.JSON.Parse(configAsset.text);
         encryptionKey = configRoot["encryption_key"];
         projectId = configRoot["project_uid"];
+    }
+
+    public EncryptionResult Encrypt(byte[] data)
+    {
+        
         EncryptionResult result = new EncryptionResult();
         using (RijndaelManaged rijndael = new RijndaelManaged())
         {
