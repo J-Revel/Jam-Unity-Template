@@ -13,7 +13,7 @@ public class ScoreSendForm : MonoBehaviour
 
     private void Start()
     {
-        inputField.text = PlayerPrefs.GetString("username", "");
+        inputField.text = ScoreSystem.instance.username;
     }
 
     private void Update()
@@ -29,18 +29,17 @@ public class ScoreSendForm : MonoBehaviour
 
     public IEnumerator SendScoreCoroutine()
     {
-        int scoreId = PlayerPrefs.GetInt("scoreId", -1);
         WWWForm form = new WWWForm();
         string username = inputField.text;
         form.AddField("username", username);
-        form.AddField("id", scoreId);
+        form.AddField("id", ScoreSystem.instance.scoreId);
         EncryptionResult encryptedScore = EncryptionService.instance.Encrypt(Encoding.UTF8.GetBytes(ScoreSystem.instance.score.ToString()));
         form.AddField("score", System.Convert.ToBase64String(encryptedScore.data));
         form.AddField("iv", System.Convert.ToBase64String(encryptedScore.iv));
         form.AddField("project", EncryptionService.instance.projectId);
 
         string requestPath = "https://webservice.guilloteam.fr/score/add/";
-        if(scoreId >= 0)
+        if(ScoreSystem.instance.scoreId >= 0)
         {
             requestPath = "https://webservice.guilloteam.fr/score/update/";
         }
@@ -50,21 +49,19 @@ public class ScoreSendForm : MonoBehaviour
         switch (webRequest.result)
         {
             case UnityWebRequest.Result.Success:
-                Debug.Log(webRequest.downloadHandler.text);
                 SimpleJSON.JSONNode rootNode = SimpleJSON.JSON.Parse(webRequest.downloadHandler.text);
                 int rank = rootNode["data"]["rank"];
                 int id = rootNode["data"]["id"];
                 
-                PlayerPrefs.SetInt("scoreId", id);
-                PlayerPrefs.SetString("username", username);
-                PlayerPrefs.Save();
+                ScoreSystem.instance.SetUserData(id, username);
                 
-                LeaderboardMenu spawnedMenu = Instantiate(leaderboardMenuPrefab).gameObject.GetComponent<LeaderboardMenu>();
+                LeaderboardMenu spawnedMenu = Instantiate(leaderboardMenuPrefab, transform.parent).gameObject.GetComponent<LeaderboardMenu>();
                 spawnedMenu.pageIndex = rank / spawnedMenu.pageSize;
                 spawnedMenu.tempScore = ScoreSystem.instance.score;
                 spawnedMenu.tempUsername = username;
                 Destroy(gameObject);
                 break;
         }
+        webRequest.Dispose();
     }
 }

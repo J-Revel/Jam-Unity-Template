@@ -69,9 +69,8 @@ public class LeaderboardMenu : MonoBehaviour
         loadingScreen.SetActive(true);
         for(int i=0; i<lines.Length; i++)
             lines[i].Clear();
-        int scoreId = PlayerPrefs.GetInt("scoreId", -1);
         WWWForm form = new WWWForm();
-        UnityWebRequest webRequest = LeaderboardUtility.GetLeaderboardRequest(EncryptionService.instance.projectId, showTop, pageSize, scoreId, tempScore, tempUsername);
+        UnityWebRequest webRequest = LeaderboardUtility.GetLeaderboardRequest(EncryptionService.instance.projectId, showTop, pageSize, ScoreSystem.instance.scoreId, ScoreSystem.instance.score, ScoreSystem.instance.username);
         yield return webRequest.SendWebRequest();
         loadingScreen.SetActive(false);
         switch (webRequest.result)
@@ -88,6 +87,7 @@ public class LeaderboardMenu : MonoBehaviour
                 Debug.Log("Error: " + webRequest.error);
                 break;
         }
+        webRequest.Dispose();
     }
 
     public void ShowTop()

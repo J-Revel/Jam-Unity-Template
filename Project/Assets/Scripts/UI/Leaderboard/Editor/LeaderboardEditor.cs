@@ -152,6 +152,7 @@ public class LeaderboardEditor : EditorWindow
             error = e.ToString();
             errorHandler?.Invoke(request.downloadHandler.text);
         }
+        request.Dispose();
     }
 
     private void ShowCreateMenu()
