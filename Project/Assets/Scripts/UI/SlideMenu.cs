@@ -4,13 +4,24 @@ using UnityEngine;
 
 public class SlideMenu : MonoBehaviour
 {
-    public SlideMenuScreen targetScreen;
+    public List<SlideMenuScreen> screenStack = new List<SlideMenuScreen>(){null};
+    public SlideMenuScreen targetScreen { 
+        get {
+            return screenStack[screenStack.Count - 1];
+        }
+        set {
+            screenStack[screenStack.Count - 1] = value;
+            targetScreenChangedDelegate?.Invoke();
+        }
+    }
+    public System.Action targetScreenChangedDelegate;
     public float animPosition;
     public float transitionDuration = 0.5f;
     private Vector3 startPosition;
     private float animTime = 0;
     private bool inTransition = false;
     public RectTransform screenSizeElement;
+    public Transform screenContainer;
     public GameObject leftButton;
     public GameObject rightButton;
 
@@ -19,8 +30,8 @@ public class SlideMenu : MonoBehaviour
 
     void Start()
     {
-        targetScreen = transform.GetChild(0).GetComponent<SlideMenuScreen>();
-        transform.localPosition = - transform.InverseTransformPoint(targetScreen.transform.position);
+        targetScreen = screenContainer.GetChild(0).GetComponent<SlideMenuScreen>();
+        screenContainer.localPosition = - screenContainer.InverseTransformPoint(targetScreen.transform.position);
         UpdateButtonsDisplay();
     }
 
@@ -30,10 +41,10 @@ public class SlideMenu : MonoBehaviour
         if(inTransition)
         {
             animTime += Time.deltaTime;
-            Vector3 targetPosition = - transform.InverseTransformPoint(targetScreen.transform.position);
+            Vector3 targetPosition = - screenContainer.InverseTransformPoint(targetScreen.transform.position);
             float animRatio = animTime / transitionDuration;
             float oneMinusRatio = 1 - animRatio;
-            transform.localPosition = Vector3.Lerp(startPosition, targetPosition, (1 - oneMinusRatio * oneMinusRatio * oneMinusRatio) * (1 - oneMinusRatio * oneMinusRatio * oneMinusRatio));
+            screenContainer.localPosition = Vector3.Lerp(startPosition, targetPosition, (1 - oneMinusRatio * oneMinusRatio * oneMinusRatio) * (1 - oneMinusRatio * oneMinusRatio * oneMinusRatio));
             if(animTime > transitionDuration)
                 inTransition = false;
         }
@@ -57,7 +68,7 @@ public class SlideMenu : MonoBehaviour
         targetScreen = registeredScreens[targetScreen.nextTarget];
         animTime = 0;
         inTransition = true;
-        startPosition = transform.localPosition;
+        startPosition = screenContainer.localPosition;
         UpdateButtonsDisplay();
     }
 
@@ -66,7 +77,7 @@ public class SlideMenu : MonoBehaviour
         targetScreen = registeredScreens[targetScreen.previousTarget];
         animTime = 0;
         inTransition = true;
-        startPosition = transform.localPosition;
+        startPosition = screenContainer.localPosition;
         UpdateButtonsDisplay();
     }
 
@@ -75,7 +86,27 @@ public class SlideMenu : MonoBehaviour
         targetScreen = registeredScreens[target];
         animTime = 0;
         inTransition = true;
-        startPosition = transform.localPosition;
+        startPosition = screenContainer.localPosition;
+        UpdateButtonsDisplay();
+    }
+
+    public void PushScreen(string target)
+    {
+        screenStack.Add(registeredScreens[target]);
+        targetScreenChangedDelegate?.Invoke();
+        animTime = 0;
+        inTransition = true;
+        startPosition = screenContainer.localPosition;
+        UpdateButtonsDisplay();
+    }
+
+    public void PopScreen()
+    {
+        screenStack.RemoveAt(screenStack.Count - 1);
+        targetScreenChangedDelegate?.Invoke();
+        animTime = 0;
+        inTransition = true;
+        startPosition = screenContainer.localPosition;
         UpdateButtonsDisplay();
     }
 }

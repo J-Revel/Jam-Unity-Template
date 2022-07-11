@@ -239,7 +239,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 37871233}
-  - component: {fileID: 37871234}
   - component: {fileID: 37871235}
   m_Layer: 5
   m_Name: Slide Menu
@@ -272,24 +271,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &37871234
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 37871232}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3cfc25434fc0aa847950368978ffaa60, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  targetScreen: {fileID: 0}
-  animPosition: 0
-  transitionDuration: 1
-  screenSizeElement: {fileID: 574518103}
-  leftButton: {fileID: 1549117426}
-  rightButton: {fileID: 1742997743}
 --- !u!222 &37871235
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -504,7 +485,6 @@ RectTransform:
   m_Children:
   - {fileID: 997484540}
   - {fileID: 343795754}
-  - {fileID: 232761552}
   - {fileID: 1206422247}
   m_Father: {fileID: 37871233}
   m_RootOrder: 0
@@ -622,6 +602,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: Title Screen
+  transitionType: 0
 --- !u!114 &157021191
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1281,6 +1262,7 @@ GameObject:
   - component: {fileID: 232761555}
   - component: {fileID: 232761554}
   - component: {fileID: 232761553}
+  - component: {fileID: 232761557}
   m_Layer: 5
   m_Name: Button (1)
   m_TagString: Untagged
@@ -1295,13 +1277,13 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 232761551}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 140596506}
-  m_RootOrder: 2
+  m_Father: {fileID: 916585641}
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
@@ -1321,6 +1303,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: Options Screen
+  transitionType: 1
 --- !u!114 &232761554
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1415,6 +1398,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 232761551}
   m_CullTransparentMesh: 1
+--- !u!114 &232761557
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 232761551}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80c8e85629d9ef94dbc5ee375802423f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  menuId: Options Screen
+  displayType: 1
+  slideMenu: {fileID: 0}
 --- !u!1 &301779536
 GameObject:
   m_ObjectHideFlags: 0
@@ -1440,9 +1438,9 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 301779536}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.9999999, y: 0.9999999, z: 0.9999999}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 916585641}
@@ -1639,6 +1637,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: Tuto 1
+  transitionType: 0
 --- !u!1 &461765389
 GameObject:
   m_ObjectHideFlags: 0
@@ -3185,6 +3184,7 @@ RectTransform:
   - {fileID: 1742997744}
   - {fileID: 1549117427}
   - {fileID: 1587690044}
+  - {fileID: 232761552}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3202,9 +3202,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 916585637}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6c7f83fc17134b94da90357cc4caa094, type: 3}
+  m_Script: {fileID: 11500000, guid: 3cfc25434fc0aa847950368978ffaa60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  screenStack:
+  - {fileID: 0}
+  animPosition: 0
+  transitionDuration: 1
+  screenSizeElement: {fileID: 574518103}
+  screenContainer: {fileID: 37871233}
+  leftButton: {fileID: 1549117426}
+  rightButton: {fileID: 1742997743}
 --- !u!1 &984436443
 GameObject:
   m_ObjectHideFlags: 0
@@ -3640,7 +3648,7 @@ RectTransform:
   m_Children:
   - {fileID: 188714718}
   m_Father: {fileID: 140596506}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -3660,6 +3668,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: Leaderboard
+  transitionType: 0
 --- !u!114 &1206422249
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4499,7 +4508,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 37871234}
+      - m_Target: {fileID: 916585642}
         m_TargetAssemblyTypeName: SlideMenu, Assembly-CSharp
         m_MethodName: SelectPrevious
         m_Mode: 1
@@ -4603,6 +4612,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: Title Screen
+  transitionType: 2
 --- !u!114 &1570732058
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5194,7 +5204,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 37871234}
+      - m_Target: {fileID: 916585642}
         m_TargetAssemblyTypeName: SlideMenu, Assembly-CSharp
         m_MethodName: SelectNext
         m_Mode: 1
