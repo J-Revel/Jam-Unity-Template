@@ -7,7 +7,7 @@ using SimpleJSON;
 public class LeaderboardUtility
 {
     public static string webServiceRoot = "https://webservice.guilloteam.fr/";
-    public static UnityWebRequest GetLeaderboardRequest(string projectId, bool showTop, int pageSize, int scoreId = -1, int tempScore = 0, string tempUsername = "")
+    public static UnityWebRequest GetLeaderboardRequest(string projectId, bool showTop, int pageSize, int scoreId, int tempScore, string tempUsername)
     {
         WWWForm form = new WWWForm();
         form.AddField("pageIndex", 0);
@@ -16,6 +16,19 @@ public class LeaderboardUtility
         form.AddField("tempScore", tempScore);
         form.AddField("tempUsername", tempUsername);
         form.AddField("project", projectId);
+        form.AddField("showTempScore", "true");
+        UnityWebRequest webRequest = UnityWebRequest.Post(webServiceRoot + "score/" + ((showTop || scoreId < 0) ? "page/" : "around/"),  form);
+        return webRequest;
+    }
+    
+    public static UnityWebRequest GetLeaderboardRequest(string projectId, bool showTop, int pageSize, int scoreId)
+    {
+        WWWForm form = new WWWForm();
+        form.AddField("pageIndex", 0);
+        form.AddField("pageSize", pageSize);
+        form.AddField("tempId", scoreId);
+        form.AddField("project", projectId);
+        form.AddField("showTempScore", "false");
         UnityWebRequest webRequest = UnityWebRequest.Post(webServiceRoot + "score/" + ((showTop || scoreId < 0) ? "page/" : "around/"),  form);
         return webRequest;
     }

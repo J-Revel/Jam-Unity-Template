@@ -194,7 +194,7 @@ public class LeaderboardEditor : EditorWindow
         GUILayout.Label("Leaderboard connected : " + configRoot["project_uid"]);
         if(GUILayout.Button("Update leaderboard"))
         {
-            SendWebRequest(LeaderboardUtility.GetLeaderboardRequest(configRoot["project_uid"], true, 50));
+            SendWebRequest(LeaderboardUtility.GetLeaderboardRequest(configRoot["project_uid"], true, 50, 0));
         }
         GUILayout.BeginHorizontal();
         GUILayout.Label("Admin Password :", GUILayout.Width(130));

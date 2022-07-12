@@ -51,7 +51,7 @@ public class LeaderboardMenu : MonoBehaviour
 
     IEnumerator Start()
     {
-        
+        ScoreSystem.instance.userDataChangedDelegate += UpdateDisplay;
         lines = new LeaderboardLine[pageSize];
         for(int i=0; i<pageSize; i++)
         {
@@ -61,23 +61,37 @@ public class LeaderboardMenu : MonoBehaviour
             rectTransform.anchorMax = new Vector2(1, 1 - (float)i / pageSize);
             lines[i].index = i;
         }
-        yield return UpdateDisplay();
+        yield return UpdateDisplayCoroutine();
     }
 
-    IEnumerator UpdateDisplay()
+    private void OnDestroy()
+    {
+        ScoreSystem.instance.userDataChangedDelegate -= UpdateDisplay;
+    }
+
+    private void UpdateDisplay()
+    {
+        StartCoroutine(UpdateDisplayCoroutine());
+    }
+
+    IEnumerator UpdateDisplayCoroutine()
     {
         loadingScreen.SetActive(true);
         for(int i=0; i<lines.Length; i++)
             lines[i].Clear();
         WWWForm form = new WWWForm();
-        UnityWebRequest webRequest = LeaderboardUtility.GetLeaderboardRequest(EncryptionService.instance.projectId, showTop, pageSize, ScoreSystem.instance.scoreId, ScoreSystem.instance.score, ScoreSystem.instance.username);
+        UnityWebRequest webRequest = null;
+        if(showLocalScore)
+           webRequest = LeaderboardUtility.GetLeaderboardRequest(EncryptionService.instance.projectId, showTop, pageSize, ScoreSystem.instance.scoreId, ScoreSystem.instance.score, ScoreSystem.instance.username);
+        else
+           webRequest = LeaderboardUtility.GetLeaderboardRequest(EncryptionService.instance.projectId, showTop, pageSize, ScoreSystem.instance.scoreId);
         yield return webRequest.SendWebRequest();
         loadingScreen.SetActive(false);
         switch (webRequest.result)
         {
             case UnityWebRequest.Result.Success:
                 JSONNode root = JSON.Parse(webRequest.downloadHandler.text);
-                LeaderboardEntry[] entries = LeaderboardUtility.ParseLeaderboardQueryResult(root);
+                LeaderboardEntry[] entries = LeaderboardUtility.ParseLeaderboardQueryResult(root, ScoreSystem.instance.scoreId);
                 for(int i=0; i<Mathf.Min(lines.Length, entries.Length); i++)
                 {
                     lines[i].leaderboardEntry = entries[i];
@@ -93,12 +107,12 @@ public class LeaderboardMenu : MonoBehaviour
     public void ShowTop()
     {
         showTop = true;
-        StartCoroutine(UpdateDisplay());
+        StartCoroutine(UpdateDisplayCoroutine());
     }
 
     public void ShowMyScore()
     {
         showTop = false;
-        StartCoroutine(UpdateDisplay());
+        StartCoroutine(UpdateDisplayCoroutine());
     }
 }

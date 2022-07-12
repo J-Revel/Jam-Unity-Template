@@ -4,12 +4,14 @@ using UnityEngine;
 using UnityEngine.Networking;
 using System.Security.Cryptography;
 using System.Text;
+using UnityEngine.Events;
 
 public class ScoreSendForm : MonoBehaviour
 {
     public TMPro.TMP_InputField inputField;
     public TMPro.TextMeshProUGUI scoreText;
     public LeaderboardMenu leaderboardMenuPrefab;
+    public UnityEvent scoreSentEvent;
 
     private void Start()
     {
@@ -54,12 +56,14 @@ public class ScoreSendForm : MonoBehaviour
                 int id = rootNode["data"]["id"];
                 
                 ScoreSystem.instance.SetUserData(id, username);
+            
+                scoreSentEvent?.Invoke();
                 
-                LeaderboardMenu spawnedMenu = Instantiate(leaderboardMenuPrefab, transform.parent).gameObject.GetComponent<LeaderboardMenu>();
-                spawnedMenu.pageIndex = rank / spawnedMenu.pageSize;
-                spawnedMenu.tempScore = ScoreSystem.instance.score;
-                spawnedMenu.tempUsername = username;
-                Destroy(gameObject);
+                // LeaderboardMenu spawnedMenu = Instantiate(leaderboardMenuPrefab, transform.parent).gameObject.GetComponent<LeaderboardMenu>();
+                // spawnedMenu.pageIndex = rank / spawnedMenu.pageSize;
+                // spawnedMenu.tempScore = ScoreSystem.instance.score;
+                // spawnedMenu.tempUsername = username;
+                // Destroy(gameObject);
                 break;
         }
         webRequest.Dispose();

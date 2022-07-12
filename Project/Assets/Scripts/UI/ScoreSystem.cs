@@ -10,6 +10,8 @@ public class ScoreSystem : MonoBehaviour
     public int scoreId;
     public string username;
 
+    public System.Action userDataChangedDelegate;
+
     public void Awake()
     {
         instance = this;
@@ -25,5 +27,8 @@ public class ScoreSystem : MonoBehaviour
         PlayerPrefs.SetInt("scoreId", id);
         PlayerPrefs.SetString("username", username);
         PlayerPrefs.Save();
+        this.username = username;
+        this.scoreId = id;
+        userDataChangedDelegate?.Invoke();
     }
 }
