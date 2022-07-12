@@ -3235,7 +3235,7 @@ GameObject:
   - component: {fileID: 916585638}
   - component: {fileID: 916585642}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: Slide Menu Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
