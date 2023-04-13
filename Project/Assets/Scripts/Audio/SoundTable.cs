@@ -36,11 +36,12 @@ public struct SoundConfig
 
 public class SoundTable : MonoBehaviour
 {
-    public AudioSource audioPrefab;
+    private AudioSource audioPrefab;
     public EventConfig[] events;
 
     private void Start()
     {
+        audioPrefab = Resources.Load<AudioSource>("Spawned Sound");
         foreach(EventConfig eventConfig in events)
         {
             EventInvocationData invocationData = eventConfig.invocationData;
