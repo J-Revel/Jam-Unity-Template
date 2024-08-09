@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 7251979ec4d9cfa42b67421ade1f75c8
+guid: b177125d312d95743a9f9db9a3acd6d7
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -33,7 +33,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 2
     mipBias: 0
     wrapU: 1
@@ -42,9 +42,9 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 3
+  spriteMode: 2
   spriteExtrude: 1
-  spriteMeshType: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
@@ -152,148 +152,127 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: UI_bouton_swipe_0
+      name: buttons free_0
       rect:
         serializedVersion: 2
-        x: 116
-        y: 359.3333
-        width: 77
-        height: 152.66667
+        x: 0
+        y: 64
+        width: 48
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 7, y: 9, z: 8, w: 8}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: df520b692b0f420429fe729cfa2b533f
-      internalID: 860585206
+      spriteID: fbd298da663e5ab488286287403595da
+      internalID: -1619100159
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: UI_bouton_swipe_1
+      name: buttons free_1
       rect:
         serializedVersion: 2
-        x: 215
-        y: 359.3333
-        width: 77
-        height: 152.66667
+        x: 48
+        y: 64
+        width: 48
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 9, y: 8, z: 8, w: 9}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: cd9e66b9e4edc5048b9b4849baa937d5
-      internalID: 27790129
+      spriteID: 46410607689d7a6438e861be7fa97979
+      internalID: 955635106
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: UI_bouton_swipe_2
+      name: buttons free_2
       rect:
         serializedVersion: 2
-        x: 215
-        y: 189.33333
-        width: 77
-        height: 152.66667
+        x: 0
+        y: 32
+        width: 48
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 58aae219309ddb049abfd1775042d122
-      internalID: -1663540174
+      spriteID: 99d78748454e88441a6ff20af824f434
+      internalID: 2134639171
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: UI_bouton_swipe_3
+      name: buttons free_3
       rect:
         serializedVersion: 2
-        x: 314
-        y: 189.33333
-        width: 77
-        height: 152.66667
+        x: 48
+        y: 32
+        width: 48
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: bfe974452930a7f44b2522177d5bb204
-      internalID: -588260839
+      spriteID: dda3905c1bb2d704389a5c430dc569a8
+      internalID: 1455424191
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: UI_bouton_swipe_4
+      name: buttons free_4
       rect:
         serializedVersion: 2
-        x: 116
-        y: 19.333328
-        width: 77
-        height: 152.66667
+        x: 0
+        y: 0
+        width: 48
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 721da7efddeb51248b7ca18649ac458d
-      internalID: 307650543
+      spriteID: a02eb1ddede62c44ea88a81e156799dc
+      internalID: 662873675
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: UI_bouton_swipe_5
+      name: buttons free_5
       rect:
         serializedVersion: 2
-        x: 215
-        y: 19.333328
-        width: 77
-        height: 152.66667
+        x: 48
+        y: 0
+        width: 48
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e754b4bb71cb3074193103eeda95c37a
-      internalID: -1206561279
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: UI_bouton_swipe_6
-      rect:
-        serializedVersion: 2
-        x: 314
-        y: 19.333328
-        width: 77
-        height: 152.66667
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 7bb0b132348ad244a8a6643703a2d2eb
-      internalID: -2052293222
+      spriteID: 88fcb0744a39b0b45a092027a01943f2
+      internalID: -1121049681
       vertices: []
       indices: 
       edges: []
@@ -309,13 +288,12 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      UI_bouton_swipe_3: -588260839
-      UI_bouton_swipe_2: -1663540174
-      UI_bouton_swipe_6: -2052293222
-      UI_bouton_swipe_1: 27790129
-      UI_bouton_swipe_5: -1206561279
-      UI_bouton_swipe_0: 860585206
-      UI_bouton_swipe_4: 307650543
+      buttons free_3: 1455424191
+      buttons free_4: 662873675
+      buttons free_0: -1619100159
+      buttons free_5: -1121049681
+      buttons free_2: 2134639171
+      buttons free_1: 955635106
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
