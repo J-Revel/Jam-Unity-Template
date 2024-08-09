@@ -19,9 +19,7 @@ public class SoundTableEditor : Editor
         serializedObject.Update();
         SerializedProperty eventsProperty = serializedObject.FindProperty("events");
         SoundTable eventTable = target as SoundTable;
-        var audioPrefabProperty = serializedObject.FindProperty("audioPrefab");
         hideUnused = GUILayout.Toggle(hideUnused, "Hide unused");
-        EditorGUILayout.ObjectField(audioPrefabProperty);
         serializedObject.ApplyModifiedProperties();
         foreach(EventInvocationData invocationData in SoundTable.ListEvents(eventTable.gameObject))
         {
