@@ -4263,15 +4263,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.78431374}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.9411765}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 434215de4d7b1b44b8aeaf6a0bd5676c, type: 3}
-  m_Type: 0
+  m_Sprite: {fileID: 21300000, guid: 45f6a532b57e3e8419384fccb88d0cb0, type: 3}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -12421,7 +12421,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 1058102080258693171, guid: 7371a39c93339bb41ab3162e59cf47b6, type: 2}
-  m_audioClip: {fileID: 8300000, guid: 1c097f620e29b1d4ab5c7d90ed0c3e43, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 1b5221dc49cd708489a63a36990c0d91, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.545
   m_Pitch: 1
@@ -12631,9 +12631,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 521ce79939c95ae42b6a1985b11fa6a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  textField: {fileID: 450139532}
-  disableLeaderboardToggle: {fileID: 747456436}
-  confirmButton: {fileID: 81558060}
 --- !u!1 &1930717308
 GameObject:
   m_ObjectHideFlags: 0
@@ -18579,7 +18576,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 1058102080258693171, guid: 7371a39c93339bb41ab3162e59cf47b6, type: 2}
-  m_audioClip: {fileID: 8300000, guid: 863fd5c348136a647b6bad86d1eca3ea, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 2605b2683805579449c7a9f7bc7c81a6, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -18707,7 +18704,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 1058102080258693171, guid: 7371a39c93339bb41ab3162e59cf47b6, type: 2}
-  m_audioClip: {fileID: 8300000, guid: 1c097f620e29b1d4ab5c7d90ed0c3e43, type: 3}
+  m_audioClip: {fileID: 8300000, guid: c10eb71252499d6488b49306a553ab49, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.483
   m_Pitch: 1
