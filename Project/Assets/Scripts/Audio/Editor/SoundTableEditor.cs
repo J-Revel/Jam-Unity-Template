@@ -77,6 +77,13 @@ public class SoundTableEditor : Editor
                     }
                     serializedObject.ApplyModifiedProperties();
                     EditorGUILayout.EndHorizontal();
+                    if (Application.isPlaying && GUILayout.Button("Play"))
+                    {
+                        eventTable.StartCoroutine(eventTable.PlaySound(eventTable.gameObject, eventTable.events[i].soundConfig, new SoundEvent
+                        {
+                            param_value = 1,
+                        }));
+                    }
                 }
 
             }

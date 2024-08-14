@@ -2098,6 +2098,7 @@ GameObject:
   - component: {fileID: 1115661208}
   - component: {fileID: 1115661209}
   - component: {fileID: 1115661210}
+  - component: {fileID: 1115661211}
   m_Layer: 0
   m_Name: Character
   m_TagString: Untagged
@@ -2334,6 +2335,29 @@ MonoBehaviour:
       volume_max: 0
       pitch_param_effect: 0
       volume_param_effect: 0
+--- !u!114 &1115661211
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1115661205}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 734edd8ca217518449b56a58e8d5b37d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  config:
+    clips:
+    - {fileID: 8300000, guid: e976f68848c7a144a853156d4dc96936, type: 3}
+    mixer_group: {fileID: 1058102080258693171, guid: 7371a39c93339bb41ab3162e59cf47b6, type: 2}
+    pitch_default: 1
+    pitch_random: 0
+    volume_min: 0.803
+    volume_max: 1
+    pitch_param_effect: 0
+    volume_param_effect: 0
+  mixer: {fileID: 1058102080258693171, guid: 7371a39c93339bb41ab3162e59cf47b6, type: 2}
 --- !u!224 &1296103115 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4190237663863555863, guid: c8a3ba3a8442ed44c9efef52b76710b9, type: 3}
