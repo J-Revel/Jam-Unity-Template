@@ -12,6 +12,7 @@ public class SlideMenuScreen : MonoBehaviour
     public Vector2 availableSize;
     private RectTransform rectTransform;
     private RectTransform parentTransform;
+    public FocusWidget initial_focus;
 
     private void Start()
     {

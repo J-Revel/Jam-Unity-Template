@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEditor.IMGUI;
 using UnityEditor;
@@ -15,7 +16,7 @@ public class AnimEditor : EditorWindow
     private bool groupEnabled = false;
     private SpriteAnimList animList;
     private int selected_anim_index = 0;
-    private int selectedAnimSprite = 0;
+    private int selected_anim_sprite = 0;
     private int selectedPointIndex = -1;
     private float displaySize = 1;
     private Vector2 scrollPos;
@@ -26,6 +27,8 @@ public class AnimEditor : EditorWindow
     private bool animation_fold;
     private bool sprites_fold;
     private bool points_fold;
+    private float frame_start_time = 0;
+    private bool playing = false;
 
     private void Init()
     {
@@ -40,11 +43,28 @@ public class AnimEditor : EditorWindow
             lastBlinkTime = Time.realtimeSinceStartup;
             Repaint();
         }
+
+        if(animList == null)
+            return;
+        SpriteAnimConfig selected_anim = animList.spriteAnims[selected_anim_index].spriteAnim;
+        if (selected_anim.durations.Length > 0)
+        {
+            if (selected_anim_sprite >= selected_anim.durations.Length)
+                selected_anim_sprite = selected_anim.durations.Length - 1;
+            float current_frame_duration = selected_anim.durations[selected_anim_sprite];
+            if (playing && Time.realtimeSinceStartup - frame_start_time > current_frame_duration / 60.0f)
+            {
+                selected_anim_sprite = (selected_anim_sprite + 1) % selected_anim.durations.Length;
+                frame_start_time = Time.realtimeSinceStartup;
+                Repaint();
+            }
+        }
     }
 
     void OnGUI()
     {
         SpriteAnimList newAnimList = (SpriteAnimList)EditorGUILayout.ObjectField(animList, typeof(SpriteAnimList), false, null);
+        
         if(newAnimList == null)
             return;
         if(newAnimList.actionPointNames == null)
@@ -72,7 +92,7 @@ public class AnimEditor : EditorWindow
         {
             animList = newAnimList;
             selected_anim_index = 0;
-            selectedAnimSprite = 0;
+            selected_anim_sprite = 0;
         }
 
         EditorGUILayout.BeginHorizontal();
@@ -133,25 +153,71 @@ public class AnimEditor : EditorWindow
             GUI.color = Color.white;
             EditorGUILayout.BeginVertical(EditorStyles.helpBox, GUILayout.Width(200));
             SpriteAnimConfig selected_sprite_anims = newAnimList.spriteAnims[selected_anim_index].spriteAnim;
+            if (selected_sprite_anims.durations.Length != selected_sprite_anims.sprites.Length)
+            {
+                selected_sprite_anims.durations = new int[selected_sprite_anims.sprites.Length];
+            }
             sprites_fold = EditorGUILayout.Foldout(sprites_fold, "Sprites ");
             if (sprites_fold)
             {
                 for(int i=0; i<selected_sprite_anims.sprites.Length; i++)
                 {
-                    EditorGUILayout.BeginHorizontal();
-                    selected_sprite_anims.sprites[i] = (Sprite)EditorGUILayout.ObjectField("Sprite" + i, selected_sprite_anims.sprites[i], typeof(Sprite));
+                    if (i == selected_anim_sprite)
+                    {
+                        GUI.color = Color.red;
+                    }
+                    EditorGUILayout.BeginHorizontal(EditorStyles.helpBox);
+                    GUI.color = Color.white;
+
+                    EditorGUILayout.BeginVertical();
+                    selected_sprite_anims.sprites[i] = (Sprite)EditorGUILayout.ObjectField("Sprite", selected_sprite_anims.sprites[i], typeof(Sprite));
+                    selected_sprite_anims.durations[i] = math.max(EditorGUILayout.IntField("Duration", selected_sprite_anims.durations[i]), 1);
+                    EditorGUILayout.EndVertical();
+                    EditorGUILayout.BeginVertical();
+                    if (GUILayout.Button("Show", GUILayout.Width(40), GUILayout.Height(40)))
+                    {
+                        selected_anim_sprite = i;
+                    }
+                    if (GUILayout.Button("Delete", GUILayout.Width(40), GUILayout.Height(40)))
+                    {
+                        Sprite[] new_sprites = new Sprite[selected_sprite_anims.sprites.Length-1];
+                        int[] new_durations = new int[selected_sprite_anims.sprites.Length - 1];
+                        for (int j = 0; j < selected_sprite_anims.sprites.Length-1; j++)
+                        {
+                            if (j < i)
+                            {
+                                new_sprites[j] = selected_sprite_anims.sprites[j];
+                                new_durations[j] = selected_sprite_anims.durations[j];
+                            }
+                            else
+                            {
+                                new_sprites[j] = selected_sprite_anims.sprites[j+1];
+                                new_durations[j] = selected_sprite_anims.durations[j+1];
+                            }
+                        }
+
+                        selected_sprite_anims.sprites = new_sprites;
+                        selected_sprite_anims.durations = new_durations;
+                    }
+
+                    EditorGUILayout.EndVertical();
                     EditorGUILayout.EndHorizontal();
                 }
 
                 if (GUILayout.Button("+"))
                 {
                     Sprite[] new_sprites = new Sprite[selected_sprite_anims.sprites.Length+1];
+                    int[] new_durations = new int[selected_sprite_anims.sprites.Length+1];
                     for (int i = 0; i < selected_sprite_anims.sprites.Length; i++)
                     {
                         new_sprites[i] = selected_sprite_anims.sprites[i];
+                        new_durations[i] = selected_sprite_anims.durations[i];
                     }
 
+                    new_durations[^1] = 1;
+
                     selected_sprite_anims.sprites = new_sprites;
+                    selected_sprite_anims.durations = new_durations;
                 }
             }
             EditorGUILayout.EndVertical();
@@ -177,16 +243,10 @@ public class AnimEditor : EditorWindow
                     EditorUtility.SetDirty(newAnimList);
                 }
             EditorGUILayout.EndHorizontal();
-            float newFramePerSecond = EditorGUILayout.FloatField(selectedAnimElement.spriteAnim.framePerSecond);
-            if(newFramePerSecond != selectedAnimElement.spriteAnim.framePerSecond)
-            {
-                selectedAnimElement.spriteAnim.framePerSecond = newFramePerSecond;
-                EditorUtility.SetDirty(newAnimList);
-            }
             SpriteAnimConfig spriteAnim = newAnimList.spriteAnims[selected_anim_index].spriteAnim;
             if(spriteAnim.sprites.Length == 0)
                 return;
-            Sprite sprite = spriteAnim.GetSpriteFromIndex(selectedAnimSprite);
+            Sprite sprite = spriteAnim.GetSpriteFromIndex(selected_anim_sprite);
             Vector2 maxSpriteSize = Vector2.zero;
             for(int i=0; i<spriteAnim.sprites.Length; i++)
             {
@@ -198,12 +258,16 @@ public class AnimEditor : EditorWindow
             }
             
             displaySize = EditorGUILayout.Slider(displaySize, 0.01f, 10);
-            selectedAnimSprite = EditorGUILayout.IntSlider(selectedAnimSprite, 0, spriteAnim.sprites.Length - 1);
+            if (playing != EditorGUILayout.Toggle("Animate", playing))
+            {
+                frame_start_time = Time.realtimeSinceStartup;
+                playing = !playing;
+            }
             Rect rect = GUILayoutUtility.GetRect(100.0f, 100.0f, GUILayout.ExpandHeight(true));
             Vector2[] points = new Vector2[animList.actionPointNames.Length];
             for(int i=0; i<animList.actionPointNames.Length; i++)
             {
-                points[i] = spriteAnim.GetSpritePoint(i, selectedAnimSprite);
+                points[i] = spriteAnim.GetSpritePoint(i, selected_anim_sprite);
             }
             string[] options = new string[newAnimList.actionPointNames.Length + 1];
             options[0] = "Move";
@@ -254,7 +318,7 @@ public class AnimEditor : EditorWindow
         if (selectedPointIndex >= 0 && e.isMouse && (e.type == EventType.MouseDown || e.type == EventType.MouseDrag) && e.button == 0)
         {
             SpriteAnimConfig spriteAnim = newAnimList.spriteAnims[selected_anim_index].spriteAnim;
-            spriteAnim.SetActionPoint(selectedPointIndex, selectedAnimSprite, WorldToRelative(sprite, contentCenter, displaySize, e.mousePosition));
+            spriteAnim.SetActionPoint(selectedPointIndex, selected_anim_sprite, WorldToRelative(sprite, contentCenter, displaySize, e.mousePosition));
             EditorUtility.SetDirty(newAnimList);
             Repaint();
         }

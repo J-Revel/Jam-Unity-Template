@@ -5,6 +5,8 @@ using UnityEngine;
 public class SlideMenu : MonoBehaviour
 {
     public List<SlideMenuScreen> screenStack = new List<SlideMenuScreen>(){null};
+    public FocusMenu focus_menu;
+    
     public SlideMenuScreen targetScreen { 
         get {
             return screenStack[screenStack.Count - 1];
@@ -19,7 +21,7 @@ public class SlideMenu : MonoBehaviour
     public float transitionDuration = 0.5f;
     private Vector3 startPosition;
     private float animTime = 0;
-    private bool inTransition = false;
+    private bool in_transition = false;
     public RectTransform screenSizeElement;
     public Transform screenContainer;
     public GameObject leftButton;
@@ -38,7 +40,8 @@ public class SlideMenu : MonoBehaviour
     private void Update()
     {
         targetScreen.availableSize = screenSizeElement.rect.size;
-        if(inTransition)
+        focus_menu.navigation_enabled = !in_transition;
+        if(in_transition)
         {
             animTime += Time.deltaTime;
             Vector3 targetPosition = - screenContainer.InverseTransformPoint(targetScreen.transform.position);
@@ -46,7 +49,7 @@ public class SlideMenu : MonoBehaviour
             float oneMinusRatio = 1 - animRatio;
             screenContainer.localPosition = Vector3.Lerp(startPosition, targetPosition, (1 - oneMinusRatio * oneMinusRatio * oneMinusRatio) * (1 - oneMinusRatio * oneMinusRatio * oneMinusRatio));
             if(animTime > transitionDuration)
-                inTransition = false;
+                in_transition = false;
         }
     }
 
@@ -67,8 +70,10 @@ public class SlideMenu : MonoBehaviour
     {
         targetScreen = registeredScreens[targetScreen.nextTarget];
         animTime = 0;
-        inTransition = true;
+        in_transition = true;
+        focus_menu.ForceFocus(targetScreen.initial_focus);
         startPosition = screenContainer.localPosition;
+        focus_menu.navigation_enabled = true;
         UpdateButtonsDisplay();
     }
 
@@ -76,7 +81,9 @@ public class SlideMenu : MonoBehaviour
     {
         targetScreen = registeredScreens[targetScreen.previousTarget];
         animTime = 0;
-        inTransition = true;
+        focus_menu.navigation_enabled = true;
+        focus_menu.ForceFocus(targetScreen.initial_focus);
+        in_transition = true;
         startPosition = screenContainer.localPosition;
         UpdateButtonsDisplay();
     }
@@ -85,17 +92,22 @@ public class SlideMenu : MonoBehaviour
     {
         targetScreen = registeredScreens[target];
         animTime = 0;
-        inTransition = true;
+        focus_menu.navigation_enabled = true;
+        focus_menu.ForceFocus(targetScreen.initial_focus);
+        in_transition = true;
         startPosition = screenContainer.localPosition;
         UpdateButtonsDisplay();
     }
 
     public void PushScreen(string target)
     {
-        screenStack.Add(registeredScreens[target]);
+        SlideMenuScreen target_screen = registeredScreens[target];
+        screenStack.Add(target_screen);
+        focus_menu.navigation_enabled = true;
+        focus_menu.ForceFocus(target_screen.initial_focus);
         targetScreenChangedDelegate?.Invoke();
         animTime = 0;
-        inTransition = true;
+        in_transition = true;
         startPosition = screenContainer.localPosition;
         UpdateButtonsDisplay();
     }
@@ -105,8 +117,10 @@ public class SlideMenu : MonoBehaviour
         screenStack.RemoveAt(screenStack.Count - 1);
         targetScreenChangedDelegate?.Invoke();
         animTime = 0;
-        inTransition = true;
+        in_transition = true;
         startPosition = screenContainer.localPosition;
+        focus_menu.navigation_enabled = true;
+        focus_menu.ForceFocus(screenStack[^1].initial_focus);
         UpdateButtonsDisplay();
     }
 }

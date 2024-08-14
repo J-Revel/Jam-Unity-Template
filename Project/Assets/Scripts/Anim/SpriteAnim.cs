@@ -6,28 +6,47 @@ using UnityEngine;
 public class SpriteAnimConfig
 {
     public Sprite[] sprites = {};
+    public int[] durations = { };
     public Vector2[] actionPoints = {};
-    public float framePerSecond = 24;
     public bool loop = true;
 
     public bool IsAnimationFinished(float time)
     {
-        return Mathf.FloorToInt(time * framePerSecond) > sprites.Length;
+        int duration_sum = 0;
+        for (int i = 0; i < durations.Length; i++)
+        {
+            duration_sum += durations[i];
+        }
+        return time * 60 > duration_sum;
     }
 
     public int GetSpriteIndex(int index)
     {
+        if (sprites.Length == 0)
+            return 0;
         return loop ? index % sprites.Length : Mathf.Min(index, sprites.Length - 1);
     }
 
     public Sprite GetSpriteFromTime(float time)
     {
-        int index = Mathf.FloorToInt(time * framePerSecond);
-        return sprites[GetSpriteIndex(index)];
+        if (sprites.Length == 0)
+            return null;
+        float cursor = 0;
+        int i;
+        for (i = 0; cursor <= time; i++)
+        {
+            int sprite_index = GetSpriteIndex(i);
+            cursor += durations[sprite_index];
+            if (durations[sprite_index] == 0)
+                return sprites[sprite_index];
+        }
+        return sprites[GetSpriteIndex(i)];
     }
 
     public Sprite GetSpriteFromIndex(int index)
     {
+        if (sprites.Length == 0)
+            return null;
         return sprites[loop ? index % sprites.Length : Mathf.Min(index, sprites.Length - 1)];
     }
 
@@ -38,7 +57,18 @@ public class SpriteAnimConfig
 
     public int GetSpriteIndex(float time)
     {
-        return Mathf.FloorToInt(time * framePerSecond);
+        if (sprites.Length == 0)
+            return 0;
+        float cursor = 0;
+        int i;
+        for (i = 0; cursor <= time; i++)
+        {
+            int sprite_index = GetSpriteIndex(i);
+            cursor += durations[sprite_index] / 60.0f;
+            if (durations[sprite_index] == 0)
+                return sprite_index;
+        }
+        return GetSpriteIndex(i);
     }
 
     public void SetActionPoint(int pointIndex, int spriteIndex, Vector2 point)

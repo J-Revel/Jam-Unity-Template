@@ -15,32 +15,15 @@ MonoBehaviour:
   spriteAnims:
   - name: Test Anim
     spriteAnim:
-      sprites: []
-      actionPoints: []
-      framePerSecond: 24
+      sprites:
+      - {fileID: 955635106, guid: b177125d312d95743a9f9db9a3acd6d7, type: 3}
+      - {fileID: -1121049681, guid: b177125d312d95743a9f9db9a3acd6d7, type: 3}
+      - {fileID: 2134639171, guid: b177125d312d95743a9f9db9a3acd6d7, type: 3}
+      durations: 140000001e00000005000000
+      actionPoints:
+      - {x: 0.3125, y: 0}
+      - {x: 0.25, y: 0}
+      - {x: 0.33333334, y: 0.1875}
       loop: 1
-  - name: Bob
-    spriteAnim:
-      sprites: []
-      actionPoints: []
-      framePerSecond: 24
-      loop: 1
-  - name: gla
-    spriteAnim:
-      sprites: []
-      actionPoints: []
-      framePerSecond: 24
-      loop: 1
-  - name: x
-    spriteAnim:
-      sprites: []
-      actionPoints: []
-      framePerSecond: 24
-      loop: 1
-  - name: z
-    spriteAnim:
-      sprites: []
-      actionPoints: []
-      framePerSecond: 24
-      loop: 1
-  actionPointNames: []
+  actionPointNames:
+  - new anim
