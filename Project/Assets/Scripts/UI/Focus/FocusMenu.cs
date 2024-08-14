@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class FocusMenu : MonoBehaviour
 {
@@ -14,33 +15,53 @@ public class FocusMenu : MonoBehaviour
     public bool confirm_action_down = false;
 
     public bool navigation_enabled = true;
+
+    private System.Action<InputAction.CallbackContext> right_action_event,
+        left_action_event,
+        up_action_event,
+        down_action_event,
+        confirm_action_event; 
     
     void Start()
     {
         active_menu = this;
         initial_focus.ForceFocus();
         input_config = new InputConfig();
-        input_config.Navigation.Right.performed += callback_context =>
+        right_action_event = (callback_context =>
         {
             HandleNavigationAction(WidgetNavigationAction.Right, WidgetNavigationDirection.Right);
-        };
-        input_config.Navigation.Left.performed += callback_context =>
+        });
+        left_action_event = callback_context =>
         {
             HandleNavigationAction(WidgetNavigationAction.Left, WidgetNavigationDirection.Left);
         };
-        input_config.Navigation.Up.performed += callback_context =>
+        up_action_event = callback_context =>
         {
             HandleNavigationAction(WidgetNavigationAction.Up, WidgetNavigationDirection.Up);
         };
-        input_config.Navigation.Down.performed += callback_context =>
+        down_action_event = callback_context =>
         {
             HandleNavigationAction(WidgetNavigationAction.Down, WidgetNavigationDirection.Down);
         };
-        input_config.Navigation.Confirm.performed += callback_context =>
+        confirm_action_event = callback_context =>
         {
             HandleConfirmState();
         };
+        input_config.Navigation.Right.performed += right_action_event;
+        input_config.Navigation.Left.performed += left_action_event;
+        input_config.Navigation.Up.performed += up_action_event;
+        input_config.Navigation.Down.performed += down_action_event;
+        input_config.Navigation.Confirm.performed += confirm_action_event;
         input_config.Enable();
+    }
+
+    private void OnDestroy()
+    {
+        input_config.Navigation.Right.performed -= right_action_event;
+        input_config.Navigation.Left.performed -= left_action_event;
+        input_config.Navigation.Up.performed -= up_action_event;
+        input_config.Navigation.Down.performed -= down_action_event;
+        input_config.Navigation.Confirm.performed -= confirm_action_event;
     }
 
     public void ForceFocus(FocusWidget new_focus)

@@ -43,7 +43,7 @@ public class LinearLayout : MonoBehaviour
 
         widget.focus_gained_delegate = (stack) =>
         {
-            for (int i = 0; i < menu.focus_stack.Count; i++)
+            for (int i = 0; i < menu.focus_stack.Count - 1; i++)
             {
                 if (stack[i] == widget)
                 {

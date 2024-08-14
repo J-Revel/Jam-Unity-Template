@@ -242,6 +242,7 @@ MonoBehaviour:
   previousTarget: 
   size: {x: 960, y: 600}
   availableSize: {x: 0, y: 0}
+  initial_focus: {fileID: 0}
 --- !u!1 &5634008918787183264
 GameObject:
   m_ObjectHideFlags: 0
@@ -531,6 +532,10 @@ PrefabInstance:
     - target: {fileID: 3403878457890182607, guid: 2260b36d193780f45821a7411d8af08e, type: 3}
       propertyPath: m_Name
       value: Leaderboard Page
+      objectReference: {fileID: 0}
+    - target: {fileID: 4547616435617543014, guid: 2260b36d193780f45821a7411d8af08e, type: 3}
+      propertyPath: focus_on_hover
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5128927765927350641, guid: 2260b36d193780f45821a7411d8af08e, type: 3}
       propertyPath: m_AnchorMax.y

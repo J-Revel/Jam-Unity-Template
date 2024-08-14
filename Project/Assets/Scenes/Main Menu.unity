@@ -2751,8 +2751,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 747456435}
-  - component: {fileID: 747456436}
   - component: {fileID: 747456437}
+  - component: {fileID: 747456440}
+  - component: {fileID: 747456439}
+  - component: {fileID: 747456438}
+  - component: {fileID: 747456441}
   m_Layer: 5
   m_Name: Offline Toggle
   m_TagString: Untagged
@@ -2781,7 +2784,7 @@ RectTransform:
   m_AnchoredPosition: {x: 4.424, y: -136}
   m_SizeDelta: {x: 318.031, y: 46.826}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &747456436
+--- !u!114 &747456437
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2790,7 +2793,131 @@ MonoBehaviour:
   m_GameObject: {fileID: 747456434}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9085046f02f69544eb97fd06b6048fe2, type: 3}
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 4
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1897044755}
+          m_TargetAssemblyTypeName: UnityEngine.AudioSource, UnityEngine
+          m_MethodName: Play
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+--- !u!114 &747456438
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 747456434}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cac7795feb2a5a43b2edcd9260d3cfb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: 0}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+  display_states:
+    default_state:
+      sprite: {fileID: 0}
+      color: {r: 0, g: 0, b: 0, a: 0}
+    focus_state:
+      sprite: {fileID: 0}
+      color: {r: 1, g: 1, b: 1, a: 0.18431373}
+    pressed_state:
+      sprite: {fileID: 0}
+      color: {r: 1, g: 1, b: 1, a: 0.105882354}
+    disabled_state:
+      sprite: {fileID: 0}
+      color: {r: 0, g: 0, b: 0, a: 0}
+    disabled_focus_state:
+      sprite: {fileID: 0}
+      color: {r: 0, g: 0, b: 0, a: 0}
+  interactable: 1
+  on_click:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 747456441}
+        m_TargetAssemblyTypeName: FocusToggle, Assembly-CSharp
+        m_MethodName: Toggle
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+  on_focus_gain:
+    m_PersistentCalls:
+      m_Calls: []
+  on_focus_lost:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!222 &747456439
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 747456434}
+  m_CullTransparentMesh: 1
+--- !u!114 &747456440
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 747456434}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddfa8bb72aac25a49a8ba41e79c21561, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  focus_on_hover: 1
+  focus_gained_event:
+    m_PersistentCalls:
+      m_Calls: []
+  focus_lost_event:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &747456441
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 747456434}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb591e5ecf728864fb28f848c5c21621, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
@@ -2828,36 +2955,7 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_IsOn: 1
---- !u!114 &747456437
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 747456434}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Delegates:
-  - eventID: 4
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1897044755}
-          m_TargetAssemblyTypeName: UnityEngine.AudioSource, UnityEngine
-          m_MethodName: Play
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
+  m_IsOn: 0
 --- !u!1 &764163917
 GameObject:
   m_ObjectHideFlags: 0
@@ -3216,7 +3314,7 @@ MonoBehaviour:
   initial_focus: {fileID: 2140899171485513017}
   focus_stack: []
   confirm_action_down: 0
-  navigation_enabled: 0
+  navigation_enabled: 1
 --- !u!1 &973417779
 GameObject:
   m_ObjectHideFlags: 0
@@ -6445,8 +6543,8 @@ RectTransform:
   m_Children:
   - {fileID: 1333670521}
   - {fileID: 450139531}
-  - {fileID: 2120342792}
   - {fileID: 747456435}
+  - {fileID: 2120342792}
   m_Father: {fileID: 37871233}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -6522,7 +6620,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textField: {fileID: 450139532}
-  disableLeaderboardToggle: {fileID: 747456436}
+  disableLeaderboardToggle: {fileID: 747456441}
   confirmButton: {fileID: 2120342795}
 --- !u!114 &1907918558
 MonoBehaviour:
