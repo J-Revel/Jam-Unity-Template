@@ -1024,6 +1024,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Leaderboard Page
       objectReference: {fileID: 0}
+    - target: {fileID: 5962879154784130886, guid: 2260b36d193780f45821a7411d8af08e, type: 3}
+      propertyPath: showTop
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5962879154784130886, guid: 2260b36d193780f45821a7411d8af08e, type: 3}
+      propertyPath: showLocalScore
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6905683533938360309, guid: 2260b36d193780f45821a7411d8af08e, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
