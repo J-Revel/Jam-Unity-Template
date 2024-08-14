@@ -20,10 +20,13 @@ MonoBehaviour:
       - {fileID: -1121049681, guid: b177125d312d95743a9f9db9a3acd6d7, type: 3}
       - {fileID: 2134639171, guid: b177125d312d95743a9f9db9a3acd6d7, type: 3}
       durations: 140000001e00000005000000
-      actionPoints:
-      - {x: 0.3125, y: 0}
-      - {x: 0.25, y: 0}
-      - {x: 0.33333334, y: 0.1875}
+      actionPoints: []
       loop: 1
-  actionPointNames:
-  - new anim
+  - name: Test Anim 2
+    spriteAnim:
+      sprites:
+      - {fileID: 1455424191, guid: b177125d312d95743a9f9db9a3acd6d7, type: 3}
+      durations: 01000000
+      actionPoints: []
+      loop: 1
+  actionPointNames: []

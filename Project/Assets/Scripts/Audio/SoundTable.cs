@@ -30,8 +30,8 @@ public class SoundConfig
 
     public float pitch_default = 1;
     public float pitch_random = 0;
-    [Range(0, 1)] public float volume_min = 1;
-    [Range(0, 1)] public float volume_max = 0;
+    [Range(0, 1)] public float volume_min = 0;
+    [Range(0, 1)] public float volume_max = 1;
     public float pitch_param_effect = 0;
     public float volume_param_effect = 0;
 }

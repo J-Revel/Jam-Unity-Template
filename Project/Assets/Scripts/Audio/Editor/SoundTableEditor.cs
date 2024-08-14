@@ -75,7 +75,6 @@ public class SoundTableEditor : Editor
                     {
                         eventsProperty.DeleteArrayElementAtIndex(i);
                     }
-                    serializedObject.ApplyModifiedProperties();
                     EditorGUILayout.EndHorizontal();
                     if (Application.isPlaying && GUILayout.Button("Play"))
                     {
@@ -90,6 +89,7 @@ public class SoundTableEditor : Editor
             EditorGUI.indentLevel--;
             EditorGUILayout.EndVertical();
             EditorGUILayout.EndVertical();
+            serializedObject.ApplyModifiedProperties();
         }
     }
 }

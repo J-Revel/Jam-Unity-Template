@@ -1880,10 +1880,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae58007e121b04748bdf33d3221495f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spriteRenderer: {fileID: 1084571085}
-  animList: {fileID: 11400000, guid: 9c387770cb69c894ea14ad59b0c93ac7, type: 2}
-  animIndex: 0
-  loopAnim: 1
+  sprite_renderer: {fileID: 1084571085}
+  anim_list: {fileID: 11400000, guid: 9c387770cb69c894ea14ad59b0c93ac7, type: 2}
+  anim_index: 0
 --- !u!212 &1084571085
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2357,7 +2356,6 @@ MonoBehaviour:
     volume_max: 1
     pitch_param_effect: 0
     volume_param_effect: 0
-  mixer: {fileID: 1058102080258693171, guid: 7371a39c93339bb41ab3162e59cf47b6, type: 2}
 --- !u!224 &1296103115 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4190237663863555863, guid: c8a3ba3a8442ed44c9efef52b76710b9, type: 3}
